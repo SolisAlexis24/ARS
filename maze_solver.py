@@ -1,17 +1,26 @@
+"""
+    1: es una pared
+    0: camino libre
+    S: comienzo
+    M: meta
+"""
+import os
 #MAZE_SOLVER class to identify where is the program currently
 
 class MAZE_SOLVER():
-    def __init__(self, maze, forward_x: int, forward_y: int) -> None:
-        self.x = 0  #x coordinate of the MAZE_SOLVER
-        self.y = 0  #y coordinate of the MAZE_SOLVER
-        self.forward_x = forward_x  #x coordinate of the front of the maze solver (where it is facing at)
-        self.forward_y = forward_y  #y coordinate of the front of the maze solver (where it is facing at)
+    def __init__(self, maze, forward_x: int, forward_y: int, i: int, j:int) -> None:
+        # Inicialización de los atributos (Varaibles)
+        self.x = i  #x coordinate of the MAZE_SOLVER
+        self.y = j    #y coordinate of the MAZE_SOLVER
+        self.forward_x = forward_x  # 1  x coordinate of the front of the maze solver (where it is facing at)
+        self.forward_y = forward_y  # 0  y coordinate of the front of the maze solver (where it is facing at)
         self.maze = maze #maze to solve
         self.orientation = None #Orientation of the maze solver
         self.def_orientation() #Defining the orientation of the maze solver
         self.rows = len(maze)
         self.cols = len(maze[0]) if self.rows > 0 else 0
 
+    # Método para imprimir el laberinto y la información
     def show(self) -> None:
         """Method to print the coordinates of the maze_solver"""
         for i in range(self.rows):
@@ -21,9 +30,11 @@ class MAZE_SOLVER():
                 else:
                     print(f'\t{self.maze[i][j]}', end='')
             print('\n')
-        print(f'Maze solver at ( {self.x}, {self.y} )')
-        print(f'Looking at ( {self.forward_x}, {self.forward_y} )')
+        print(f'\t\t\t    Posición actual: ( {self.x}, {self.y} )')
+        print(f'\t\t\t\tMirando a: ( {self.forward_x}, {self.forward_y} )')
+        print()
 
+    # Verifica si no las coordenadas no se salen del laberinto
     def exists(self, x: int, y: int) -> bool:
         """Method to check if the provided coordinates exists
         :param x: Row
@@ -31,6 +42,9 @@ class MAZE_SOLVER():
         :return: True if the coordinates are valid"""
         return 0 <= x < self.rows and 0 <= y < self.cols
 
+    # This method was created in order to go ahead or turn back
+    # S y W avanza
+    # Antihorario
     def turnCC(self) -> None:
         """Method to turn one pixel counterclockwise the front of the maze solver"""
         #If the mz is looking South -> Look East
@@ -39,7 +53,7 @@ class MAZE_SOLVER():
             self.forward_y = self.y + 1
             self.orientation = 'E'
         #If the mz is looking West -> Look South
-        elif self.orientation == 'W':
+        elif self.orientation == 'W': # Oeste
             self.forward_x = self.x + 1
             self.forward_y = self.y
             self.orientation = 'S'
@@ -54,6 +68,7 @@ class MAZE_SOLVER():
             self.forward_y = self.y
             self.orientation = 'N'
 
+    # Horario
     def turnC(self) -> None:
         """Method to turn one pixel clockwise the front of the maze solver"""
         #If the mz is looking South -> Look West
@@ -117,24 +132,41 @@ class MAZE_SOLVER():
         """
         # The code repeats itself n times
         for _ in range(n):
-            print(f'===============Iteration {_}===============')
+            print(f'\n\t\t=============== Iteration {_} ===============')
             self.show()
+            # #################################################################
             #If the coordinate of the towards square from the maze is valid
             if self.exists(self.forward_x, self.forward_y):
                 #get the symbol of the square towards
+                # front symbol (x,y)
                 front_symbol = self.maze[self.forward_x][self.forward_y]
+                # =================================================== 
                 #if the maze solver can move into the towards square according to the rules
                 if front_symbol == 0 or front_symbol == 'S' or front_symbol == 'M':
                     self.go_ahead()
                     #If the current location symbol is the goal
                     if self.maze[self.x][self.y] == 'M':
-                        print('Maze solved successfully!!!')
+                        print("\n\n\t\t==-==-==-==-==-== M E T A ==-==-==-==-==-==")
+                        self.show()
+                        print('LLEGASTE A LA METAAAAAA AAAA TE AMO DEEEYYYY')
                         exit(0)
                 else:
                     self.turnCC()
+                # =================================================== 
             else:
                 self.turnCC()
+             # ############################################################### 
         print("Goal not found!!!")
+
+
+def find_goal(maze):
+    """Find the coordinates of the goal 'M' in the maze."""
+    for i in range(len(maze)):           # Recorre las filas
+        for j in range(len(maze[i])):    # Recorre las columnas
+            if maze[i][j] == 'S':        # Si encuentra la meta
+                return (i, j)            # Regresa las coordenadas como una tupla
+    return None                          # Si no encuentra la meta, regresa None
+
 
 
 ex1 = [['S', 0, 0, 0, 0, 0, 0, 0, 0],
@@ -143,11 +175,13 @@ ex1 = [['S', 0, 0, 0, 0, 0, 0, 0, 0],
        [0, 0, 0, 0, 'M', 0, 0, 0, 0],
        [0, 1, 0, 0, 0, 0, 1, 0, 0],
        [0, 1, 1, 0, 0, 1, 1, 0, 0],
-       ['M', 0, 0, 0, 0, 0, 0, 0, 0]
+       [0, 0, 0, 0, 0, 0, 0, 0, 0]
        ]
 
-
 if __name__ == "__main__":
-    mz = MAZE_SOLVER(ex1, 1, 0)
+    os.system('cls')
+    [i,j] = find_goal(ex1)
+    # MAZE_SOLVER(matriz, mirandox, mirandoy,  coorInicialX, coorInicialY)
+    mz = MAZE_SOLVER(ex1, i+1, j, i, j)
+    # Numero de intentos
     mz.solve_ars(100)
-
