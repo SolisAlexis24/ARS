@@ -8,14 +8,17 @@ import os
 #MAZE_SOLVER class to identify where is the program currently
 
 class MAZE_SOLVER():
-    def __init__(self, maze, forward_x: int, forward_y: int, i: int, j:int) -> None:
+    def __init__(self, maze) -> None:
         # Inicialización de los atributos (Varaibles)
-        self.x = i  #x coordinate of the MAZE_SOLVER
-        self.y = j    #y coordinate of the MAZE_SOLVER
-        self.forward_x = forward_x  # 1  x coordinate of the front of the maze solver (where it is facing at)
-        self.forward_y = forward_y  # 0  y coordinate of the front of the maze solver (where it is facing at)
+        self.x = None #x coordinate of the MAZE_SOLVER
+        self.y = None   #y coordinate of the MAZE_SOLVER
         self.maze = maze #maze to solve
         self.orientation = None #Orientation of the maze solver
+        self.find_start()
+        if self.x is None:
+            exit(1)
+        self.forward_x = self.x + 1 # 1  x coordinate of the front of the maze solver (where it is facing at)
+        self.forward_y = self.y  # 0  y coordinate of the front of the maze solver (where it is facing at)
         self.def_orientation() #Defining the orientation of the maze solver
         self.rows = len(maze)
         self.cols = len(maze[0]) if self.rows > 0 else 0
@@ -159,17 +162,16 @@ class MAZE_SOLVER():
         print("Goal not found!!!")
 
 
-def find_goal(maze):
-    """Find the coordinates of the goal 'M' in the maze."""
-    for i in range(len(maze)):           # Recorre las filas
-        for j in range(len(maze[i])):    # Recorre las columnas
-            if maze[i][j] == 'S':        # Si encuentra la meta
-                return (i, j)            # Regresa las coordenadas como una tupla
-    return None                          # Si no encuentra la meta, regresa None
+    def find_start(self):
+        """Find the coordinates of the goal 'S' in the maze"""
+        for i in range(len(self.maze)):           # Recorre las filas
+            for j in range(len(self.maze[i])):    # Recorre las columnas
+                if self.maze[i][j] == 'S':        # Si encuentra el inicio
+                    self.x = i
+                    self.y = j
+                    break
 
-
-
-ex1 = [['S', 0, 0, 0, 0, 0, 0, 0, 0],
+ex1 = [[0, 0, 0, 0, 0, 0, 0, 0, 'S'],
        [0, 1, 1, 0, 0, 1, 1, 0, 0],
        [0, 1, 0, 0, 0, 0, 1, 0, 0],
        [0, 0, 0, 0, 'M', 0, 0, 0, 0],
@@ -180,8 +182,6 @@ ex1 = [['S', 0, 0, 0, 0, 0, 0, 0, 0],
 
 if __name__ == "__main__":
     os.system('cls')
-    [i,j] = find_goal(ex1)
-    # MAZE_SOLVER(matriz, mirandox, mirandoy,  coorInicialX, coorInicialY)
-    mz = MAZE_SOLVER(ex1, i+1, j, i, j)
+    mz = MAZE_SOLVER(ex1)
     # Numero de intentos
     mz.solve_ars(100)
