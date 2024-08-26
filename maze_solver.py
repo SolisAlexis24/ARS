@@ -5,13 +5,13 @@
     M: meta
 """
 import os
-#MAZE_SOLVER class to identify where is the program currently
+#Maze_solver class to identify where is the program currently
 
-class MAZE_SOLVER():
+class Maze_solver():
     def __init__(self, maze) -> None:
         # Inicialización de los atributos (Varaibles)
-        self.x = None #x coordinate of the MAZE_SOLVER
-        self.y = None   #y coordinate of the MAZE_SOLVER
+        self.x = None #x coordinate of the Maze_solver
+        self.y = None   #y coordinate of the Maze_solver
         self.maze = maze #maze to solve
         self.orientation = None #Orientation of the maze solver
         self.find_start()
@@ -25,7 +25,7 @@ class MAZE_SOLVER():
 
     # Método para imprimir el laberinto y la información
     def show(self) -> None:
-        """Method to print the coordinates of the maze_solver"""
+        """Method to print the coordinates of the Maze_solver"""
         for i in range(self.rows):
             for j in range(self.cols):
                 if i == self.x and j == self.y:
@@ -129,7 +129,7 @@ class MAZE_SOLVER():
             self.y = self.forward_y
             self.forward_y += 1
 
-    def solve_ars(self, n: int) -> None:
+    def solve_sra(self, n: int) -> None:
         """Method to solve the maze with the Simple Reflex Agent algorithm
         :param n: Number of movements that the maze solver can do, it includes turning and go ahead
         """
@@ -182,6 +182,6 @@ ex1 = [[0, 0, 0, 0, 0, 0, 0, 0, 'S'],
 
 if __name__ == "__main__":
     os.system('cls')
-    mz = MAZE_SOLVER(ex1)
+    mz = Maze_solver(ex1)
     # Numero de intentos
     mz.solve_ars(100)
