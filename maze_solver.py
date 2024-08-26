@@ -184,4 +184,4 @@ if __name__ == "__main__":
     os.system('cls')
     mz = Maze_solver(ex1)
     # Numero de intentos
-    mz.solve_ars(100)
+    mz.solve_sra(100)
