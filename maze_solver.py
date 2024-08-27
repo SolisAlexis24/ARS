@@ -5,11 +5,9 @@
     M: meta
 """
 import os
-#Maze_solver class to identify where is the program currently
 
 class Maze_solver():
     def __init__(self, maze) -> None:
-        # Inicialización de los atributos (Varaibles)
         self.x = None #x coordinate of the Maze_solver
         self.y = None   #y coordinate of the Maze_solver
         self.maze = maze #maze to solve
@@ -23,7 +21,6 @@ class Maze_solver():
         self.rows = len(maze)
         self.cols = len(maze[0]) if self.rows > 0 else 0
 
-    # Método para imprimir el laberinto y la información
     def show(self) -> None:
         """Method to print the coordinates of the Maze_solver"""
         for i in range(self.rows):
@@ -37,7 +34,6 @@ class Maze_solver():
         print(f'\t\t\t\tMirando a: ( {self.forward_x}, {self.forward_y} )')
         print()
 
-    # Verifica si no las coordenadas no se salen del laberinto
     def exists(self, x: int, y: int) -> bool:
         """Method to check if the provided coordinates exists
         :param x: Row
@@ -45,51 +41,49 @@ class Maze_solver():
         :return: True if the coordinates are valid"""
         return 0 <= x < self.rows and 0 <= y < self.cols
 
-    # This method was created in order to go ahead or turn back
-    # S y W avanza
-    # Antihorario
+
     def turnCC(self) -> None:
         """Method to turn one pixel counterclockwise the front of the maze solver"""
-        #If the mz is looking South -> Look East
+        #If the ms is looking South -> Look East
         if self.orientation == 'S':
             self.forward_x = self.x
             self.forward_y = self.y + 1
             self.orientation = 'E'
-        #If the mz is looking West -> Look South
+        #If the ms is looking West -> Look South
         elif self.orientation == 'W': # Oeste
             self.forward_x = self.x + 1
             self.forward_y = self.y
             self.orientation = 'S'
-        #If the mz is looking North -> Look West
+        #If the ms is looking North -> Look West
         elif self.orientation == 'N':
             self.forward_x = self.x
             self.forward_y = self.y - 1
             self.orientation = 'W'
-        #If the mz is looking East -> Look North
+        #If the ms is looking East -> Look North
         elif self.orientation == 'E':
             self.forward_x = self.x - 1
             self.forward_y = self.y
             self.orientation = 'N'
 
-    # Horario
+
     def turnC(self) -> None:
         """Method to turn one pixel clockwise the front of the maze solver"""
-        #If the mz is looking South -> Look West
+        #If the ms is looking South -> Look West
         if self.orientation == 'S':
             self.forward_x = self.x
             self.forward_y = self.y - 1
             self.orientation = 'W'
-        #If the mz is looking West -> Look North
+        #If the ms is looking West -> Look North
         elif self.orientation == 'W':
             self.forward_x = self.x - 1
             self.forward_y = self.y
             self.orientation = 'N'
-        #If the mz is looking North -> Look East
+        #If the ms is looking North -> Look East
         elif self.orientation == 'N':
             self.forward_x = self.x
             self.forward_y = self.y + 1
             self.orientation = 'E'
-        #If the mz is looking East -> Look South
+        #If the ms is looking East -> Look South
         elif self.orientation == 'E':
             self.forward_x = self.x + 1
             self.forward_y = self.y
@@ -97,34 +91,34 @@ class Maze_solver():
 
     def def_orientation(self):
         """Method to define the maze solver orientation (Noth (N), South (S), East (E) or Weast (W))"""
-        #If the mz is looking South
+        #If the ms is looking South
         if self.forward_x > self.x and self.forward_y == self.y:
             self.orientation = 'S'
-        #If the mz is looking West
+        #If the ms is looking West
         elif self.forward_x == self.x and self.forward_y < self.y:
             self.orientation = 'W'
-        #If the mz is looking North
+        #If the ms is looking North
         elif self.forward_x < self.x and self.forward_y == self.y:
             self.orientation = 'N'
-        #If the mz is looking East
+        #If the ms is looking East
         elif self.forward_x == self.x and self.forward_y > self.y:
             self.orientation = 'E'
 
     def go_ahead(self):
         """Method to make the maze solver move one square towards the position it is looking at"""
-        #If the mz is looking South
+        #If the ms is looking South
         if self.orientation == 'S':
             self.x = self.forward_x
             self.forward_x += 1
-        #If the mz is looking West
+        #If the ms is looking West
         elif self.orientation == 'W':
             self.y = self.forward_y
             self.forward_y -= 1
-        #If the mz is looking North
+        #If the ms is looking North
         elif self.orientation == 'N':
             self.x = self.forward_x
             self.forward_x -= 1
-        #If the mz is looking East
+        #If the ms is looking East
         elif self.orientation == 'E':
             self.y = self.forward_y
             self.forward_y += 1
